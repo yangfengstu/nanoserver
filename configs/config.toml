@@ -16,21 +16,21 @@ cert = "configs/****.crt"       #证书路径
 key = "configs/****.key"        #Key路径
 
 [game-server]
-host = "127.0.0.1"
+host = "0.0.0.0"
 port = 33251
 
 # Redis server config
 [redis]
 host = "127.0.0.1"
-port = 6357
+port = 6379
 
 # Mysql server config
 [database]
 host = "127.0.0.1"
 port = 3306
 dbname = "scmj"
-password = ""
-username = "root"
+password = "123456"
+username = "scmj"
 args = "charset=utf8mb4"
 buf_size = 10
 max_idle_conns = 20
@@ -55,19 +55,19 @@ ip = ["10.10.*", "127.0.0.1", ".*"]                 #白名单地址, 支持gola
 
 #分享信息
 [share]
-title = "血战到底"
-desc = "纯正四川玩法，快捷便利的掌上血战，轻松组局，随时随地尽情游戏"
+title = "淮滨麻将"
+desc = "纯正淮滨玩法，快捷便利的掌上麻将，轻松组局，随时随地尽情游戏"
 
 #更新设置
 [update]
-force = true #是否强制更新
+force = false #是否强制更新
 version = "1.9.3"
 android = "https://fir.im/tand"
 ios = "https://fir.im/tios"
 
 #联系设置
 [contact]
-daili1 = "kefuweixin01"
+daili1 = "kefuweixin00"
 daili2 = "kefuweixin01"
 kefu1 = "kefuweixin01"
 
