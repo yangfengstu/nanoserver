@@ -11,7 +11,9 @@ import (
 // 1-9: 条
 // 11-19: 筒
 // 21-29: 万
-const MaxTileIndex = 29
+// 31-34 东南西北
+// 41 -43 中发白
+const MaxTileIndex = 43
 
 type Mahjong []*Tile
 

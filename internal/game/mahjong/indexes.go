@@ -39,20 +39,20 @@ func (indexes Indexes) Sort() {
 
 func (indexes Indexes) Mark(is ...int) {
 	for _, i := range is {
-		indexes[i] |= 0x80
+		indexes[i] |= 0x100
 	}
 }
 
 func (indexes Indexes) Unmark(is ...int) {
 	for _, i := range is {
-		indexes[i] &^= 0x80
+		indexes[i] &^= 0x100
 	}
 }
 
 func (indexes Indexes) UnmarkedCount() int {
 	var count int
 	for i := 0; i < len(indexes); i++ {
-		if indexes[i]&0x80 != 0 {
+		if indexes[i]&0x100 != 0 {
 			continue
 		}
 		count++
@@ -67,12 +67,13 @@ type IndexInfo struct {
 
 // 返回一个刻子, 并返回数量
 func (indexes Indexes) UnmarkedSequence() ([3]IndexInfo, int) {
+	indexes.Sort()
 	var count int
 	var ret = [3]IndexInfo{}
 	var prev int
 	for i := 0; i < len(indexes); i++ {
 		index := indexes[i]
-		if index&0x80 != 0 {
+		if index&0x100 != 0 {
 			continue
 		}
 		if count < 1 || prev+1 == index {
@@ -93,7 +94,7 @@ func (indexes Indexes) UnmarkedTriplet() ([3]IndexInfo, int) {
 	var prev int
 	for i := 0; i < len(indexes); i++ {
 		index := indexes[i]
-		if index&0x80 != 0 {
+		if index&0x100 != 0 {
 			continue
 		}
 		if count < 1 || prev == index {
@@ -114,7 +115,7 @@ func (indexes Indexes) Unmarked() ([14]IndexInfo, int) {
 	var ret = [14]IndexInfo{}
 	for i := 0; i < len(indexes); i++ {
 		index := indexes[i]
-		if index&0x80 != 0 {
+		if index&0x100 != 0 {
 			continue
 		}
 		ret[count] = IndexInfo{Index: index, I: i}
@@ -127,7 +128,7 @@ func (indexes Indexes) UnmarkedString() string {
 	var ret []string
 	for i := 0; i < len(indexes); i++ {
 		index := indexes[i]
-		if index&0x80 != 0 {
+		if index&0x100 != 0 {
 			continue
 		}
 		ret = append(ret, TileFromIndex(index).String())
@@ -139,8 +140,8 @@ func (indexes Indexes) String() string {
 	var ret []string
 	for i := 0; i < len(indexes); i++ {
 		index := indexes[i]
-		if index&0x80 != 0 {
-			index &^= 0x80
+		if index&0x100 != 0 {
+			index &^= 0x100
 		}
 		ret = append(ret, TileFromIndex(index).String())
 	}
@@ -149,14 +150,14 @@ func (indexes Indexes) String() string {
 
 func (indexes Indexes) TileString(i int) string {
 	index := indexes[i]
-	if index&0x80 != 0 {
-		index &^= 0x80
+	if index&0x100 != 0 {
+		index &^= 0x100
 	}
 	return TileFromIndex(index).String()
 }
 
 func (indexes Indexes) Reset() {
 	for i := 0; i < len(indexes); i++ {
-		indexes[i] &^= 0x80
+		indexes[i] &^= 0x100
 	}
 }

@@ -6,15 +6,6 @@ import (
 	"github.com/lonng/nanoserver/protocol"
 )
 
-func _TestBase_CanWinBySelfDrawing(t *testing.T) {
-	t.SkipNow()
-	tables := []int{4, 6, 15, 15, 7, 4, 7, 6, 17, 17, 18, 18, 16, 16}
-
-	if CanZimo(tables) != true {
-		t.FailNow()
-	}
-}
-
 func _TestBase_CanWinByOtherDiscard(t *testing.T) {
 	t.SkipNow()
 

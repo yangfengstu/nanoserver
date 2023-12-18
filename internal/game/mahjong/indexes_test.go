@@ -7,28 +7,28 @@ import (
 )
 
 func TestIndexes_Sort(t *testing.T) {
-	var indexes = Indexes{2, 3, 87, 5, 2, 2, 2, 1, 74, 29, 39, 56, 23, 91}
-	Sort()
+	var indexes = Indexes{2, 3, 5, 2, 2, 2, 1, 29, 32, 23, 42}
+	indexes.Sort()
 	fmt.Printf("%+v", indexes)
 }
 
 func BenchmarkIndexes_Sort(b *testing.B) {
-	var indexes = Indexes{2, 3, 87, 5, 2, 2, 2, 1, 74, 29, 39, 56, 23, 91}
+	var indexes = Indexes{2, 3, 87, 5, 2, 2, 2, 1, 24, 29, 39, 333, 23, 21}
 	b.ResetTimer()
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		Sort()
+		indexes.Sort()
 	}
 }
 
 func TestIndexes_MakeUsed(t *testing.T) {
 	var indexes = Indexes{2, 3, 87, 5, 2, 2, 2, 1, 74, 29, 39, 56, 23, 91}
-	Mark(5, 6, 7)
-	if u := UnmarkedCount(); u != len(indexes)-3 {
+	indexes.Mark(5, 6, 7)
+	if u := indexes.UnmarkedCount(); u != len(indexes)-3 {
 		t.Fatalf("unused: %v", u)
 	}
-	Reset()
-	if u := UnmarkedCount(); u != len(indexes) {
+	indexes.Reset()
+	if u := indexes.UnmarkedCount(); u != len(indexes) {
 		t.Fatalf("unused: %v", u)
 	}
 	if !reflect.DeepEqual(indexes, Indexes{2, 3, 87, 5, 2, 2, 2, 1, 74, 29, 39, 56, 23, 91}) {
@@ -41,13 +41,13 @@ func BenchmarkIndexes_UnusedCount(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		UnmarkedCount()
+		indexes.UnmarkedCount()
 	}
 }
 
 func TestIndexes_Unused(t *testing.T) {
-	var indexes = Indexes{2, 3, 87, 5, 2, 2, 2, 1, 74, 29, 39, 56, 23, 91}
-	var ret, count = UnmarkedSequence()
+	var indexes = Indexes{2, 3, 87, 5, 2, 2, 2, 1, 74, 29, 39, 56, 23, 91, 133}
+	var ret, count = indexes.UnmarkedSequence()
 	if count != 3 {
 		t.Fatalf("unexpect count: %d", count)
 	}
@@ -55,8 +55,8 @@ func TestIndexes_Unused(t *testing.T) {
 		t.Fatalf("expece equal: %+v", ret)
 	}
 
-	Mark(1, 2)
-	ret, count = UnmarkedSequence()
+	indexes.Mark(1, 2)
+	ret, count = indexes.UnmarkedSequence()
 	if count != 3 {
 		t.Fatalf("unexpect count: %d", count)
 	}
@@ -64,8 +64,8 @@ func TestIndexes_Unused(t *testing.T) {
 		t.Fatalf("expece equal: %+v", ret)
 	}
 
-	Reset()
-	ret, count = UnmarkedSequence()
+	indexes.Reset()
+	ret, count = indexes.UnmarkedSequence()
 	if count != 3 {
 		t.Fatalf("unexpect count: %d", count)
 	}
@@ -80,11 +80,11 @@ func BenchmarkIndexes_Unused(b *testing.B) {
 		if i%2 == 0 {
 			continue
 		}
-		Mark(i)
+		indexes.Mark(i)
 	}
 	b.ResetTimer()
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		UnmarkedSequence()
+		indexes.UnmarkedSequence()
 	}
 }
